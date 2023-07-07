@@ -7,12 +7,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class InputPasswordComponent {
 
-  
   showPassword: boolean = false;
   
   @Input() placeholder: string = 'Senha';
   @Input() password: string = '';
-  @Output() passwordChange: EventEmitter<string> = new EventEmitter
+  @Output() passwordChange: EventEmitter<string> = new EventEmitter;
 
   changePassword(): void {
     this.passwordChange.emit(this.password);

@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
+// Componentes
 import { MatIconModule } from '@angular/material/icon';
 import { InputPasswordComponent } from './components/input-password/input-password.component';
 import { DecorationContainerComponent } from './components/decoration-container/decoration-container.component';
@@ -25,6 +26,9 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
 import { TableComponent } from './components/table/table.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
+
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -45,14 +49,16 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     LoadingComponent,
     DashboardCardComponent,
     TableComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    FormButtonsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

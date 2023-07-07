@@ -1,5 +1,104 @@
 <app-loading [show]="loading"></app-loading>
 
-<app-header-page title="Clientes"></app-header-page>
+<app-header-page title="Clientes" [(viewRegisters)]="viewRegisters"></app-header-page>
 
-<app-table [tableHeaders]="['Nome', 'E-mail', 'Telefone', 'Instragram']" [tableLines]="tableLines" [values]="clients"></app-table>
+<app-table *ngIf="viewRegisters" [tableHeaders]="['Nome', 'E-mail', 'Telefone', 'Instragram']" [tableLines]="tableLines" [values]="clients"></app-table>
+
+<form *ngIf="!viewRegisters" class="form-main">
+
+    <div class="title">
+        <h3>Dados pessoais</h3>
+        <hr>
+    </div>
+
+    <div class="line">
+        <!-- Nome do cliente -->
+        <div class="inputBox">
+            <label for="name">Nome</label>
+            <input type="text" [(ngModel)]="clientForm.name" name="name" id="name" placeholder="Ex. José da Silva">
+        </div>
+        <!-- Email do cliente -->
+        <div class="inputBox">
+            <label for="email">E-mail</label>
+            <input type="email" [(ngModel)]="clientForm.email" name="email" id="email" placeholder="email@provedor.com">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Nome do cliente -->
+        <div class="inputBox">
+            <label for="tel">Telefone</label>
+            <input type="tel" [(ngModel)]="clientForm.telphone" name="tel" id="tel" placeholder="(00) 00000-0000" mask="(00) 00000-0000">
+        </div>
+        <!-- Email do cliente -->
+        <div class="inputBox">
+            <label for="instagram">Instagram</label>
+            <input type="text" [(ngModel)]="clientForm.instagram" name="instagram" id="instagram" placeholder="Ex. @josesilva">
+        </div>
+    </div>
+    
+</form>
+
+<form *ngIf="!viewRegisters" class="form-main">
+
+    <div class="title">
+        <h3>Endereço</h3>
+        <hr>
+    </div>
+
+    <div class="line">
+        <!-- CEP do cliente -->
+        <div class="inputBox">
+            <label for="cep">CEP</label>
+            <input type="tel" [(ngModel)]="clientForm.address.cep" (ngModelChange)="searchCep()" name="cep" id="cep" placeholder="00000-000" mask="00000-000">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Estado do cliente -->
+        <div class="inputBox">
+            <label for="state">Estado</label>
+            <select [(ngModel)]="clientForm.address.state" (ngModelChange)="getCities()" name="state" id="state">
+                <option [value]="null" selected>Selecione um estado</option>
+                <option [value]="state.sigla" *ngFor="let state of states">{{state.nome}}</option>
+            </select>
+        </div>
+        <!-- Cidade do cliente -->
+        <div class="inputBox">
+            <label for="city">Cidade</label>
+            <select [(ngModel)]="clientForm.address.city" name="city" id="city">
+                <option [value]="null" selected>Selecione uma cidade</option>
+                <option [value]="city.nome" *ngFor="let city of cities">{{city.nome}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Bairro do cliente -->
+        <div class="inputBox">
+            <label for="neighborhood">Bairro</label>
+            <input type="text" [(ngModel)]="clientForm.address.neighborhood" name="neighborhood" id="neighborhood" placeholder="Ex. Jardim Primavera">
+        </div>
+        <!-- Rua do cliente -->
+        <div class="inputBox">
+            <label for="street">Rua</label>
+            <input type="text" [(ngModel)]="clientForm.address.street" name="street" id="street" placeholder="Ex. Rua João Antônio Fagundes">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Número do endereço do cliente -->
+        <div class="inputBox">
+            <label for="number">Número</label>
+            <input type="number" [(ngModel)]="clientForm.address.number" name="number" id="number" placeholder="Ex. 458">
+        </div>
+        <!-- Complemento do cliente -->
+        <div class="inputBox">
+            <label for="complement">Complemento</label>
+            <input type="text" [(ngModel)]="clientForm.address.complement" name="complement" id="complement" placeholder="Ex. apto 842">
+        </div>
+    </div>
+    
+</form>
+
+<app-form-buttons *ngIf="!viewRegisters" [isCreate]="true" [saveAction]="save" [editAction]="edit" [deleteAction]="delete"></app-form-buttons>

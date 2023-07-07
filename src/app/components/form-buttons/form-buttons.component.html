@@ -1,0 +1,5 @@
+<div class="buttons">
+    <button *ngIf="isCreate" class="green" (click)="saveAction()">Salvar</button>
+    <button *ngIf="!isCreate" class="blue" (click)="editAction()">Editar</button>
+    <button *ngIf="!isCreate" class="red" (click)="deleteAction()">Excluir</button>
+</div>

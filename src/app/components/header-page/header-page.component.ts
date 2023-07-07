@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header-page',
@@ -10,5 +10,14 @@ export class HeaderPageComponent {
 
   @Input() title: string = '';
   @Input() showActionButtons: boolean = true;
+  @Input() viewRegisters: boolean = true;
+
+  @Output() viewRegistersChange: EventEmitter<boolean> = new EventEmitter;
+
+  changeView(isRegister: boolean = true): void {
+    this.viewRegisters = isRegister;
+
+    this.viewRegistersChange.emit(isRegister);
+  }
 
 }
