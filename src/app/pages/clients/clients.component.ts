@@ -32,7 +32,7 @@ export class ClientsComponent implements OnInit {
 
     this.loading = true;
 
-    await firstValueFrom(this.clientsService.getAll(8))
+    await firstValueFrom(this.clientsService.getAll(1))
       .then((data) => {
         this.clients = data;
         data.forEach((client: any) => this.tableLines.push([ client.name, client.email, client.telephone, client.instagram ]))

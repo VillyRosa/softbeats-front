@@ -22,6 +22,8 @@ export class UsersService {
 
   url: string = '';
 
+  authenticatedUser: any = undefined;
+
   constructor(
     private functionsService: FunctionsService,
     private http: HttpClient
@@ -41,6 +43,18 @@ export class UsersService {
 
     return this.http.post(this.url + 'create/', bodyRequest)
 
+  }
+
+  getAuth(): any {
+
+    if (window.localStorage.getItem('login')) {
+      const authenticatedUser = window.localStorage.getItem('login');
+      if (authenticatedUser !== null) {
+        this.authenticatedUser = JSON.parse(authenticatedUser);
+      }
+    }
+    
+    return this.authenticatedUser;
   }
 
 }

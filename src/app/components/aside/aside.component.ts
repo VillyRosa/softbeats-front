@@ -33,4 +33,11 @@ export class AsideComponent {
 
   }
 
+  logout() {
+
+    window.localStorage.clear();
+    this.router.navigate(['login']);
+
+  }
+
 }

@@ -24,6 +24,7 @@ import { HeaderPageComponent } from './components/header-page/header-page.compon
 import { LoadingComponent } from './components/loading/loading.component';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
 import { TableComponent } from './components/table/table.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { TableComponent } from './components/table/table.component';
     HeaderPageComponent,
     LoadingComponent,
     DashboardCardComponent,
-    TableComponent
+    TableComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
