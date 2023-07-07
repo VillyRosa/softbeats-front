@@ -1,0 +1,31 @@
+.card {
+    width: 250px;
+    padding: 12px;
+
+    background-color: rgb(172, 37, 32);
+    border-radius: 6px;
+    border-bottom: 1px solid #420e0e;
+    box-shadow: 0 2px 8px #000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    mat-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 35px;
+    }
+
+    .texts {
+        color: #fff;
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+
+        .value { font-size: 20px; font-weight: 500; }
+    }
+
+}

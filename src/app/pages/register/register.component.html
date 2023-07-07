@@ -1,0 +1,39 @@
+<app-loading [show]="loading"></app-loading>
+<main>
+        
+    <div class="align-horizontal">
+
+        <app-decoration-container></app-decoration-container>
+
+        <form>
+
+            <h2>Cadastro</h2>
+            <p>Acesse sua conta</p>
+
+            <div class="inputsContainer">
+
+                <div class="inputBox">
+                    <mat-icon name="person">person</mat-icon>
+                    <input type="text" required name="name" [(ngModel)]="registerObj.name" placeholder="Nome">
+                </div>
+                
+                <div class="inputBox">
+                    <mat-icon>mail</mat-icon>
+                    <input type="email" required name="email" [(ngModel)]="registerObj.email" placeholder="E-mail">
+                </div>
+    
+                <app-input-password [(password)]="registerObj.password"></app-input-password>
+
+                <app-input-password [(password)]="registerObj.passwordRepeat" placeholder="Repete senha"></app-input-password>
+
+            </div>
+
+            <input type="submit" value="Cadastrar" (click)="register()">
+
+        </form>
+
+    </div>
+
+    <p class="register-link">Já possui uma conta? <a routerLink="/login">Entre agora</a></p>
+
+</main>

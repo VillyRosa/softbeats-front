@@ -1,0 +1,5 @@
+<app-loading [show]="loading"></app-loading>
+
+<app-header-page title="Clientes"></app-header-page>
+
+<app-table [tableHeaders]="['Nome', 'E-mail', 'Telefone', 'Instragram']" [tableLines]="tableLines" [values]="clients"></app-table>

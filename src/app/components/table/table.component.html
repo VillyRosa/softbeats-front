@@ -1,0 +1,11 @@
+<table>
+
+    <tr>
+        <th *ngFor="let tableHeader of tableHeaders">{{tableHeader}}</th>
+    </tr>
+
+    <tr class="line" *ngFor="let tableLine of tableLines; let i = index" (click)="teste(values[i].id)">
+        <td *ngFor="let line of tableLine">{{line}}</td>
+    </tr>
+
+</table>

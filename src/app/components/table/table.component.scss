@@ -1,0 +1,19 @@
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+
+    th, td {
+        padding: 6px;
+        border: 1px solid rgb(165, 23, 23);
+        color: #fff;
+    }
+    
+    tr:nth-child(1) { background-color: #ac37372d; }
+    
+    td { color: #cccccc; cursor: pointer; }
+}
+
+.line:hover {
+    background-color: #922d2d13;
+}

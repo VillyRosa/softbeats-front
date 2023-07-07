@@ -1,0 +1,32 @@
+<app-loading [show]="loading"></app-loading>
+<main>
+        
+    <div class="align-horizontal">
+
+        <form>
+
+            <h2>Login</h2>
+            <p>Acesse sua conta</p>
+
+            <div class="inputsContainer">
+
+                <div class="inputBox">
+                    <mat-icon name="person">person</mat-icon>
+                    <input type="email" required name="email" [(ngModel)]="loginObj.email" placeholder="E-mail">
+                </div>
+    
+                <app-input-password [(password)]="loginObj.password"></app-input-password>
+
+            </div>
+
+            <input type="submit" value="Entrar" (click)="login()">
+
+        </form>
+
+        <app-decoration-container></app-decoration-container>
+
+    </div>
+
+    <p class="register-link">Não possui conta? <a routerLink="/register">Cadastre-se agora</a></p>
+
+</main>
