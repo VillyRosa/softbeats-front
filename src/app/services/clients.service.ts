@@ -11,9 +11,18 @@ interface ICreate {
   instagram: string;
 }
 
+interface IEdit {
+  id: number,
+  name?: string;
+  email?: string;
+  telephone?: string;
+  instagram?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class ClientsService {
 
   url: string = '';
@@ -29,13 +38,25 @@ export class ClientsService {
 
   getAll(userid: number): Observable<any> {
 
-    return this.http.get(this.url + `?userid=${userid}`)
+    return this.http.get(this.url + userid)
 
   }
 
   create(client: ICreate): Observable<any> {
 
     return this.http.post(this.url, client)
+
+  }
+
+  edit(client: IEdit): Observable<any> {
+
+    return this.http.patch(this.url, client)
+
+  }
+
+  delete(clientId: number): Observable<any> {
+
+    return this.http.delete(this.url + clientId)
 
   }
   

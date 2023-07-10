@@ -4,7 +4,7 @@
         <th *ngFor="let tableHeader of tableHeaders">{{tableHeader}}</th>
     </tr>
 
-    <tr class="line" *ngFor="let tableLine of tableLines; let i = index" (click)="teste(values[i].id)">
+    <tr class="line" *ngFor="let tableLine of tableLines; let i = index" (click)="setValues(values[i])">
         <td *ngFor="let line of tableLine">{{line}}</td>
     </tr>
 

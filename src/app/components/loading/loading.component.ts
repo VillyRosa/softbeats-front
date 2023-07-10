@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FunctionsService } from 'src/app/services/functions.service';
 
 @Component({
   selector: 'app-loading',
@@ -7,6 +8,13 @@ import { Component, Input } from '@angular/core';
 })
 export class LoadingComponent {
 
-  @Input() show: boolean = false;
+  constructor(
+    private readonly functionsService: FunctionsService
+  ) {}
+
+  toggleVisibility(): boolean {
+    console.log(this.functionsService.showLoading)
+    return this.functionsService.showLoading; 
+  }
 
 }

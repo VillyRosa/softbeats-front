@@ -29,6 +29,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
 
 import { NgxMaskModule } from 'ngx-mask';
+import { AlertComponent } from './components/alert/alert.component';
+import { InputSearchComponent } from './components/input-search/input-search.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import { NgxMaskModule } from 'ngx-mask';
     DashboardCardComponent,
     TableComponent,
     NotFoundComponent,
-    FormButtonsComponent
+    FormButtonsComponent,
+    AlertComponent,
+    InputSearchComponent
   ],
   imports: [
     BrowserModule,

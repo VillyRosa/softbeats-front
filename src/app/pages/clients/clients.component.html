@@ -1,8 +1,15 @@
-<app-loading [show]="loading"></app-loading>
+<app-header-page title="Clientes" (handleClick)="toggleView($event)"></app-header-page>
 
-<app-header-page title="Clientes" [(viewRegisters)]="viewRegisters"></app-header-page>
+<app-input-search></app-input-search>
 
-<app-table *ngIf="viewRegisters" [tableHeaders]="['Nome', 'E-mail', 'Telefone', 'Instragram']" [tableLines]="tableLines" [values]="clients"></app-table>
+<app-table 
+ *ngIf="viewRegisters"
+ [tableHeaders]="['Nome', 'E-mail', 'Telefone', 'Instragram']" 
+ [tableLines]="tableLines" 
+ [values]="clients"
+ (objSelected)="onSelectClient($event)"
+>
+</app-table>
 
 <form *ngIf="!viewRegisters" class="form-main">
 
@@ -28,7 +35,7 @@
         <!-- Nome do cliente -->
         <div class="inputBox">
             <label for="tel">Telefone</label>
-            <input type="tel" [(ngModel)]="clientForm.telphone" name="tel" id="tel" placeholder="(00) 00000-0000" mask="(00) 00000-0000">
+            <input type="tel" [(ngModel)]="clientForm.telephone" name="tel" id="tel" placeholder="(00) 00000-0000" mask="(00) 00000-0000">
         </div>
         <!-- Email do cliente -->
         <div class="inputBox">
@@ -101,4 +108,4 @@
     
 </form>
 
-<app-form-buttons *ngIf="!viewRegisters" [isCreate]="true" [saveAction]="save" [editAction]="edit" [deleteAction]="delete"></app-form-buttons>
+<app-form-buttons *ngIf="!viewRegisters" [isCreate]="!clientForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-table',
@@ -11,8 +11,10 @@ export class TableComponent {
   @Input() tableLines: any = [];
   @Input() values: any = [];
 
-  teste(aaa: any) {
-    console.log(aaa);
+  @Output() objSelected: EventEmitter<any> = new EventEmitter;
+
+  setValues(obj: any) {
+    this.objSelected.emit(obj);
   }
 
 }

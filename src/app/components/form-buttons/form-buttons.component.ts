@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -11,8 +11,21 @@ export class FormButtonsComponent {
   constructor(private readonly usersService: UsersService) {}
 
   @Input() isCreate: boolean = true;
-  @Input() saveAction: any;
-  @Input() editAction: any;
-  @Input() deleteAction: any;
+  
+  @Output() saveAction: EventEmitter<any> = new EventEmitter();
+  @Output() editAction: EventEmitter<any> = new EventEmitter();
+  @Output() deleteAction: EventEmitter<any> = new EventEmitter();
+
+  handleClickSave() {
+    this.saveAction.emit();
+  }
+
+  handleClickEdit() {
+    this.editAction.emit();
+  }
+
+  handleClickDelete() {
+    this.deleteAction.emit();
+  }
 
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -17,23 +18,25 @@ export class RegisterComponent {
     passwordRepeat: ''
   };
 
-  loading: boolean = false;
-
   constructor(
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private readonly functionsService: FunctionsService
   ) {
 
   }
 
   async register() {
 
-    this.loading = true;
+    this.functionsService.showLoading = true;
 
     await firstValueFrom(this.usersService.register(this.registerObj))
-      .then((data) => this.router.navigate(['/login']))
-      .finally(() => this.loading = false)
-      .catch((err) => alert(err))
+      .then((data) => {
+        this.router.navigate(['/login']);
+        this.functionsService.returnAlert('Conta criada com sucesso!', 'success');
+      })
+      .finally(() => this.functionsService.showLoading = false)
+      .catch((err) => this.functionsService.returnAlert(err.error.message, 'danger'))
 
   }
 

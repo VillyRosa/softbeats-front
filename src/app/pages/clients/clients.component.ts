@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom, forkJoin } from 'rxjs';
 import { ClientsService } from 'src/app/services/clients.service';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { IbgeService } from 'src/app/services/ibge.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ViacepService } from 'src/app/services/viacep.service';
@@ -13,8 +14,6 @@ import { ViacepService } from 'src/app/services/viacep.service';
 
 export class ClientsComponent implements OnInit {
 
-  loading: boolean = false;
-
   authUser: any;
 
   viewRegisters: boolean = true;
@@ -26,7 +25,7 @@ export class ClientsComponent implements OnInit {
   clientForm: any = {
     name: '',
     email: '',
-    telphone: '',
+    telephone: '',
     instagram: '',
     address: {
       cep: '',
@@ -46,7 +45,8 @@ export class ClientsComponent implements OnInit {
     private readonly usersService: UsersService,
     private readonly clientsService: ClientsService,
     private readonly viacepService: ViacepService,
-    private readonly ibgeService: IbgeService
+    private readonly ibgeService: IbgeService,
+    private readonly functionsService: FunctionsService
   ) {
 
   }
@@ -59,10 +59,11 @@ export class ClientsComponent implements OnInit {
 
   load(): void {
 
-    this.loading = true;
+    this.functionsService.showLoading = true;
 
     this.authUser = this.usersService.getAuth();
-    console.log(this.authUser);
+    this.clients = [];
+    this.tableLines = [];
 
     const clientsRequest = this.clientsService.getAll(this.authUser.id);
     const statesRequest = this.ibgeService.getStates();
@@ -76,15 +77,20 @@ export class ClientsComponent implements OnInit {
       },
       error: error => console.log(error),
       complete: () => {
-        this.loading = false;
+        this.functionsService.showLoading = false;
       }
     });
 
   }
 
-  async getCities() {
+  toggleView(ev: boolean): void {
+    this.viewRegisters = ev;
+    this.onCancel();
+  } 
 
-    this.loading = true;
+  async getCities(): Promise<void> {
+
+    this.functionsService.showLoading = true;
     this.clientForm.address.city = null;
 
     await firstValueFrom(this.ibgeService.getCities(this.clientForm.address.state))
@@ -94,7 +100,7 @@ export class ClientsComponent implements OnInit {
 
       })
       .catch(err => console.log(err))
-      .finally(() => this.loading = false)
+      .finally(() => this.functionsService.showLoading = false)
 
   }
 
@@ -102,7 +108,7 @@ export class ClientsComponent implements OnInit {
 
     if (this.clientForm.address.cep.length !== 8) return;
 
-    this.loading = true
+    this.functionsService.showLoading = true;
 
     firstValueFrom(this.viacepService.searchCep(this.clientForm.address.cep))
       .then(async data => {
@@ -121,18 +127,32 @@ export class ClientsComponent implements OnInit {
 
       })
       .catch((err) => console.log(err))
-      .finally(() => this.loading = false)
+      .finally(() => this.functionsService.showLoading = false)
 
   }
 
-  save() {
+  onSelectClient(ev: any) {
 
-    this.loading = true;
+    this.clientForm.id = ev.id;
+    this.clientForm.name = ev.name;
+    this.clientForm.email = ev.email;
+    this.clientForm.telephone = ev.telephone;
+    this.clientForm.instagram = ev.instagram;
 
-    console.log(this.usersService.getAuth());
+    this.viewRegisters = false;
+
+  }
+
+  onSave(): void {
+
+    if (this.clientForm.name === '') return this.functionsService.returnAlert('Informe o nome do cliente!', 'danger');
+    if (this.clientForm.email === '') return this.functionsService.returnAlert('Informe o email do cliente!', 'danger');
+    if (this.clientForm.telephone === '') return this.functionsService.returnAlert('Informe o telefone do cliente!', 'danger');
+
+    this.functionsService.showLoading = true;
 
     const body: any = {
-      userid: this.usersService.getAuth(),
+      userid: this.usersService.getAuth().id,
       name: this.clientForm.name,
       email: this.clientForm.email,
       telephone: this.clientForm.telephone,
@@ -144,17 +164,65 @@ export class ClientsComponent implements OnInit {
         console.log(data)
       },
       error: error => console.log(error),
-      complete: () => this.loading = false
+      complete: () => {
+        this.functionsService.showLoading = false;
+        this.load();
+        this.viewRegisters = true;
+        this.functionsService.returnAlert('Cliente cadastrado com sucesso!', 'success');
+      }
     });
 
   }
 
-  edit() {
-    console.log('Editando!');
+  onEdit(): void {
+
+    this.functionsService.showLoading = true;
+
+    this.clientsService.edit(this.clientForm).subscribe({
+      next: data => console.log(data),
+      error: error => console.log(error),
+      complete: () => {
+        this.functionsService.showLoading = false;
+        this.load();
+        this.viewRegisters = true;
+      }
+    })
+
   }
 
-  delete() {
-    console.log('Deletando!');
+  onDelete(): void {
+    
+    this.functionsService.showLoading = true;
+
+    this.clientsService.delete(this.clientForm.id).subscribe({
+      next: data => console.log(data),
+      error: error => console.log(error),
+      complete: () => {
+        this.functionsService.showLoading = false;
+        this.load();
+        this.viewRegisters = true;
+        this.functionsService.returnAlert('Cliente deletado com sucesso!', 'success');
+      }
+    });
+
+  }
+
+  onCancel(): void {
+    this.clientForm = {
+      name: '',
+      email: '',
+      telephone: '',
+      instagram: '',
+      address: {
+        cep: '',
+        state: null,
+        city: null,
+        neighborhood: '',
+        street: '',
+        number: '',
+        complement: ''
+      }
+    };
   }
 
 }

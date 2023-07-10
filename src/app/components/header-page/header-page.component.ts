@@ -10,14 +10,11 @@ export class HeaderPageComponent {
 
   @Input() title: string = '';
   @Input() showActionButtons: boolean = true;
-  @Input() viewRegisters: boolean = true;
 
-  @Output() viewRegistersChange: EventEmitter<boolean> = new EventEmitter;
+  @Output() handleClick: EventEmitter<boolean> = new EventEmitter;
 
   changeView(isRegister: boolean = true): void {
-    this.viewRegisters = isRegister;
-
-    this.viewRegistersChange.emit(isRegister);
+    this.handleClick.emit(isRegister);
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { FunctionsService } from 'src/app/services/functions.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -16,11 +17,10 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  loading: boolean = false;
-
   constructor(
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private readonly functionsService: FunctionsService
   ) {
 
   }
@@ -31,16 +31,19 @@ export class LoginComponent implements OnInit {
 
   async login() {
 
-    this.loading = true;
+    this.functionsService.showLoading = true;
 
     await firstValueFrom(this.usersService.login(this.loginObj))
       .then((data) => {
         window.localStorage.setItem('login', JSON.stringify(data));
         this.router.navigate(['/home/dashboard']);
+        this.functionsService.returnAlert('Autenticado com sucesso!', 'success');
       })
-      .finally(() => this.loading = false)
+      .finally(() => {
+        this.functionsService.showLoading = false;
+      })
       .catch((err) => {
-        alert(err);
+        this.functionsService.returnAlert(err.error.message, 'danger');
       })
 
   }

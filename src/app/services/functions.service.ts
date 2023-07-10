@@ -5,14 +5,34 @@ import { Injectable } from '@angular/core';
 })
 export class FunctionsService {
 
-  constructor() { }
+  showLoading: boolean = false;
 
-  getUrl() {
+  alertObj: any = {
+    showAlert: false,
+    message: '',
+    type: '',
+    timer: 3000
+  };
+
+  constructor() {}
+
+  getUrl(): string {
     return 'http://localhost:3000/';
   }
 
   toBrl(value: number): string {
     return value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+  }
+
+  returnAlert(message: string, type: 'success' | 'danger' | 'warning' = 'success', timer: number = 3000) {
+
+    if (this.alertObj.showAlert) return;
+
+    this.alertObj.showAlert = true;
+    this.alertObj.message = message;
+    this.alertObj.type = type;
+    this.alertObj.timer = timer;
+
   }
 
 }

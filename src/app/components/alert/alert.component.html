@@ -1,0 +1,5 @@
+<div *ngIf="toggleVisibility()" class="container">
+    <div class="alert" [class.endAnimation]="endAnimation" [ngClass]="returnType()">
+        <p>{{returnMessage()}}</p>
+    </div>
+</div>
