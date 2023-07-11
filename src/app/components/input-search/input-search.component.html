@@ -1,4 +1,5 @@
 <div class="inputBox">
     <mat-icon name="lock-closed">search</mat-icon>
-    <input required name="password" id="password">
+    <input required [(ngModel)]="search" (ngModelChange)="changeValue(search)" name="password" id="password" placeholder="Buscar . . .">
+    <mat-icon class="clearBtn" (click)="clear()">close</mat-icon>
 </div>

@@ -11,6 +11,8 @@ export class DashboardCardComponent {
   @Input() icon: string = '';
   @Input() iconColor: string = '';
   @Input() title: string = '';
+  @Input() value!: number;
+  @Input() format: string = '';
 
   constructor(
     private functionsService: FunctionsService

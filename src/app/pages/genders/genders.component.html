@@ -1,1 +1,35 @@
-<app-header-page title="Gêneros"></app-header-page>
+<app-header-page title="Gêneros" (handleClick)="toggleView($event)"></app-header-page>
+
+<app-table
+ *ngIf="viewRegisters"
+ [tableHeaders]="['Gênero', 'Descrição']"
+ (objSelected)="onSelectClient($event)"
+>
+</app-table>
+
+<form *ngIf="!viewRegisters" class="form-main">
+
+    <div class="title">
+        <h3>Gênero</h3>
+        <hr>
+    </div>
+
+    <div class="line">
+        <!-- Nome do gênero -->
+        <div class="inputBox">
+            <label for="name">Nome</label>
+            <input type="text" name="name" id="name" placeholder="Ex. Trap">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Nome do gênero -->
+        <div class="inputBox">
+            <label for="description">Descrição</label>
+            <input type="text" name="description" id="description" placeholder="Descrição do gênero">
+        </div>
+    </div>
+
+</form>
+
+<app-form-buttons *ngIf="!viewRegisters" [isCreate]="!genderForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>

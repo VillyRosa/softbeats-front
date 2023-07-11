@@ -13,7 +13,6 @@ export class LoadingComponent {
   ) {}
 
   toggleVisibility(): boolean {
-    console.log(this.functionsService.showLoading)
     return this.functionsService.showLoading; 
   }
 

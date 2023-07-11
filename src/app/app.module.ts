@@ -6,7 +6,12 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+
+import { NgxMaskModule } from 'ngx-mask';
+
+// Interceptors
+import { BaseUrlInterceptor } from './interceptors/base-url.interceptor';
 
 // Componentes
 import { MatIconModule } from '@angular/material/icon';
@@ -27,8 +32,6 @@ import { DashboardCardComponent } from './components/dashboard-card/dashboard-ca
 import { TableComponent } from './components/table/table.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
-
-import { NgxMaskModule } from 'ngx-mask';
 import { AlertComponent } from './components/alert/alert.component';
 import { InputSearchComponent } from './components/input-search/input-search.component';
 
@@ -64,7 +67,9 @@ import { InputSearchComponent } from './components/input-search/input-search.com
     HttpClientModule,
     NgxMaskModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

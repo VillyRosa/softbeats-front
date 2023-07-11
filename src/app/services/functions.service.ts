@@ -16,10 +16,6 @@ export class FunctionsService {
 
   constructor() {}
 
-  getUrl(): string {
-    return 'http://localhost:3000/';
-  }
-
   toBrl(value: number): string {
     return value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
   }

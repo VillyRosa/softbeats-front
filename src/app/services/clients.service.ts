@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FunctionsService } from './functions.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -25,14 +24,11 @@ interface IEdit {
 
 export class ClientsService {
 
-  url: string = '';
+  url: string = 'clients/';
 
   constructor(
-    private readonly functionsService: FunctionsService,
     private http: HttpClient
   ) { 
-
-    this.url = functionsService.getUrl() + 'clients/'
 
   }
 

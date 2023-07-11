@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FunctionsService } from './functions.service';
 
 interface ILogin {
   email: string;
@@ -20,16 +19,13 @@ interface IRegister {
 
 export class UsersService {
 
-  url: string = '';
+  url: string = 'users/';
 
   authenticatedUser: any = undefined;
 
   constructor(
-    private functionsService: FunctionsService,
     private http: HttpClient
   ) { 
-
-    this.url = functionsService.getUrl() + 'users/';
 
   }
 

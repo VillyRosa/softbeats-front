@@ -83,10 +83,14 @@ export class ClientsComponent implements OnInit {
 
   }
 
+  searchClients(ev: any): void {
+    console.log(ev);
+  }
+
   toggleView(ev: boolean): void {
     this.viewRegisters = ev;
     this.onCancel();
-  } 
+  }
 
   async getCities(): Promise<void> {
 
@@ -131,7 +135,7 @@ export class ClientsComponent implements OnInit {
 
   }
 
-  onSelectClient(ev: any) {
+  onSelectClient(ev: any): void {
 
     this.clientForm.id = ev.id;
     this.clientForm.name = ev.name;

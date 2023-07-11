@@ -1,6 +1,41 @@
-<app-header-page title="Categorias"></app-header-page>
+<app-header-page title="Categorias" (handleClick)="toggleView($event)"></app-header-page>
 
 <app-table
-[tableHeaders]="['Nome', 'Preço']" 
+ *ngIf="viewRegisters"
+ [tableHeaders]="['Nome', 'Preço']"
+ [tableLines]="tableLines" 
+ [values]="categories"
+ (objSelected)="onSelectCategory($event)"
 >
 </app-table>
+
+<form *ngIf="!viewRegisters" class="form-main">
+    <div class="title">
+        <h3>Informações da categoria</h3>
+        <hr>
+    </div>
+
+    <div class="line">
+        <!-- Descrição da categoria -->
+        <div class="inputBox">
+            <label for="name">Nome</label>
+            <input type="text" [(ngModel)]="categoryForm.name" name="name" id="name" placeholder="Nome da categoria">
+        </div>
+        <!-- Descrição da categoria -->
+        <div class="inputBox">
+            <label for="price">Preço</label>
+            <input type="text" [(ngModel)]="categoryForm.price" name="price" id="price" placeholder="00,00">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Descrição da categoria -->
+        <div class="inputBox">
+            <label for="description">Descrição</label>
+            <input type="text" [(ngModel)]="categoryForm.description" name="description" id="description" placeholder="Descrição da categoria">
+        </div>
+    </div>
+
+</form>
+
+<app-form-buttons *ngIf="!viewRegisters" [isCreate]="!categoryForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>

@@ -2,6 +2,6 @@
     <mat-icon [style.color]="iconColor">{{icon}}</mat-icon>
     <div class="texts">
         <p>{{title}}</p>
-        <p class="value">{{toBrl(500)}}</p>
+        <p class="value">{{format === 'brl' ? toBrl(value) : value}}</p>
     </div>
 </div>
