@@ -1,9 +1,13 @@
 <app-header-page title="Gêneros" (handleClick)="toggleView($event)"></app-header-page>
 
+<app-input-search *ngIf="viewRegisters" (searchChange)="onSearchChange($event)"></app-input-search>
+
 <app-table
  *ngIf="viewRegisters"
  [tableHeaders]="['Gênero', 'Descrição']"
- (objSelected)="onSelectClient($event)"
+ [tableLines]="tableLines" 
+ [values]="genders"
+ (objSelected)="onSelectGender($event)"
 >
 </app-table>
 
@@ -18,7 +22,7 @@
         <!-- Nome do gênero -->
         <div class="inputBox">
             <label for="name">Nome</label>
-            <input type="text" name="name" id="name" placeholder="Ex. Trap">
+            <input type="text" [(ngModel)]="genderForm.name" name="name" id="name" placeholder="Ex. Trap">
         </div>
     </div>
 
@@ -26,7 +30,7 @@
         <!-- Nome do gênero -->
         <div class="inputBox">
             <label for="description">Descrição</label>
-            <input type="text" name="description" id="description" placeholder="Descrição do gênero">
+            <input type="text" [(ngModel)]="genderForm.description" name="description" id="description" placeholder="Descrição do gênero">
         </div>
     </div>
 

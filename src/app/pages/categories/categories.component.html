@@ -1,5 +1,7 @@
 <app-header-page title="Categorias" (handleClick)="toggleView($event)"></app-header-page>
 
+<app-input-search *ngIf="viewRegisters" (searchChange)="onSearchChange($event)"></app-input-search>
+
 <app-table
  *ngIf="viewRegisters"
  [tableHeaders]="['Nome', 'Preço']"

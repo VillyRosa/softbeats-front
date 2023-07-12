@@ -1,0 +1,30 @@
+.filter {
+    width: 100%;
+    margin: 16px 0;
+
+    gap: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    app-input-search {
+        width: 80%;
+    }
+
+    select {
+        width: 10%;
+        padding: 6px;
+        border-radius: 4px;
+    }
+}
+
+.beats-list {
+    width: 100%;
+    padding: 12px;
+
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}

@@ -8,15 +8,16 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class InputSearchComponent {
   
   @Input() search: string = '';
-  @Output() searchChange: EventEmitter<string> = new EventEmitter();
+  @Input() noMargin: boolean = false;
+  @Output() searchChange: EventEmitter<any> = new EventEmitter();
 
   clear(): void {
     this.search = '';
-    this.changeValue(this.search);
+    this.changeValue();
   }
 
-  changeValue(value: string): void {
-    this.searchChange.emit(value);
+  changeValue(): void {
+    this.searchChange.emit(this.search);
   }
 
 }

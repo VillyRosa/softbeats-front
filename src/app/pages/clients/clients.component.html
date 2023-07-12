@@ -1,6 +1,6 @@
 <app-header-page title="Clientes" (handleClick)="toggleView($event)"></app-header-page>
 
-<app-input-search *ngIf="viewRegisters" (changeValue)="searchClients($event)"></app-input-search>
+<app-input-search *ngIf="viewRegisters" (searchChange)="onSearchChange($event)"></app-input-search>
 
 <app-table 
  *ngIf="viewRegisters"

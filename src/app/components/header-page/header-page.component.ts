@@ -11,7 +11,7 @@ export class HeaderPageComponent {
   @Input() title: string = '';
   @Input() showActionButtons: boolean = true;
 
-  @Output() handleClick: EventEmitter<boolean> = new EventEmitter;
+  @Output() handleClick: EventEmitter<boolean> = new EventEmitter();
 
   changeView(isRegister: boolean = true): void {
     this.handleClick.emit(isRegister);

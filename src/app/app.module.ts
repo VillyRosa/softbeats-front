@@ -34,6 +34,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { InputSearchComponent } from './components/input-search/input-search.component';
+import { BeatCardComponent } from './components/beat-card/beat-card.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { InputSearchComponent } from './components/input-search/input-search.com
     NotFoundComponent,
     FormButtonsComponent,
     AlertComponent,
-    InputSearchComponent
+    InputSearchComponent,
+    BeatCardComponent
   ],
   imports: [
     BrowserModule,

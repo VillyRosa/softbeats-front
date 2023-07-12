@@ -61,6 +61,15 @@ export class CategoriesComponent implements OnInit {
     this.onCancel();
   }
 
+  onSearchChange(ev: string) {
+    this.tableLines = [];
+    this.categories.forEach((category: any) => {
+      if (category.name.toLowerCase().indexOf(ev.toLowerCase()) !== -1) {
+        this.tableLines.push([category.name, category.price]);
+      }
+    });
+  }
+
   onSelectCategory(ev: any): void {
     this.categoryForm.id = ev.id;
     this.categoryForm.name = ev.name;

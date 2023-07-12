@@ -83,8 +83,13 @@ export class ClientsComponent implements OnInit {
 
   }
 
-  searchClients(ev: any): void {
-    console.log(ev);
+  onSearchChange(ev: string): void {
+    this.tableLines = [];
+    this.clients.forEach((client: any) => {
+      if (client.name.toLowerCase().indexOf(ev.toLowerCase()) !== -1 || client.email.toLowerCase().indexOf(ev.toLowerCase()) !== -1 || client.instagram.indexOf(ev) !== -1) {
+        this.tableLines.push([client.name, client.email, client.telephone, client.instagram]);
+      }
+    });
   }
 
   toggleView(ev: boolean): void {
