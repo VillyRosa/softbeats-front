@@ -8,6 +8,15 @@ interface ICreate {
   email: string;
   telephone: string;
   instagram: string;
+  address: {
+    cep: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+    number: string;
+    complement: string;
+  }
 }
 
 interface IEdit {
@@ -16,6 +25,15 @@ interface IEdit {
   email?: string;
   telephone?: string;
   instagram?: string;
+  address: {
+    cep?: string;
+    state?: string;
+    city?: string;
+    neighborhood?: string;
+    street?: string;
+    number?: string;
+    complement?: string;
+  }
 }
 
 @Injectable({

@@ -2,18 +2,20 @@
 
 <div class="filter">
 
-    <app-input-search [noMargin]="true"></app-input-search>
+    <app-input-search [noMargin]="true" (searchChange)="onSearchChange($event, 'name')"></app-input-search>
 
-    <select name="" id="">
-        <option value="">Categoria</option>
+    <select name="category" id="category" [(ngModel)]="filters.selectCategory" (ngModelChange)="onSearchChange($event, 'category')">
+        <option [value]="undefined">Categoria</option>
+        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
     </select>
 
-    <select name="" id="">
-        <option value="">Gênero</option>
+    <select name="gender" id="gender" [(ngModel)]="filters.selectGender" (ngModelChange)="onSearchChange($event, 'gender')">
+        <option [value]="undefined">Gênero</option>
+        <option *ngFor="let gender of genders" [value]="gender.id">{{gender.name}}</option>
     </select>
 
 </div>
 
 <div class="beats-list">
-    <app-beat-card name="Nome do beat muito foda fodastico" image="https://s.glbimg.com/jo/g1/f/original/blog/de68dfe1-afd4-476e-b8bd-ab7305186a49_primaveranosdentescapa.jpg"></app-beat-card>
+    <app-beat-card *ngFor="let beat of beatsFilter" [name]="beat.name" [image]="beat.image" [audio]="beat.audio"></app-beat-card>
 </div>

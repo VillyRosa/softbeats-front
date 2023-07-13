@@ -140,14 +140,22 @@ export class ClientsComponent implements OnInit {
 
   }
 
-  onSelectClient(ev: any): void {
+  async onSelectClient(ev: any): Promise<void> {
 
     this.clientForm.id = ev.id;
     this.clientForm.name = ev.name;
     this.clientForm.email = ev.email;
     this.clientForm.telephone = ev.telephone;
     this.clientForm.instagram = ev.instagram;
-
+    this.clientForm.address.cep = ev.address.cep;
+    this.clientForm.address.state = ev.address.state;
+    await this.getCities()
+    this.clientForm.address.city = ev.address.city;
+    this.clientForm.address.neighborhood = ev.address.neighborhood;
+    this.clientForm.address.street = ev.address.street;
+    this.clientForm.address.number = ev.address.number;
+    this.clientForm.address.complement = ev.address.complement;
+    
     this.viewRegisters = false;
 
   }
@@ -160,15 +168,9 @@ export class ClientsComponent implements OnInit {
 
     this.functionsService.showLoading = true;
 
-    const body: any = {
-      userid: this.usersService.getAuth().id,
-      name: this.clientForm.name,
-      email: this.clientForm.email,
-      telephone: this.clientForm.telephone,
-      instagram: this.clientForm.instagram
-    };
+    this.clientForm.userid = this.authUser.id;
 
-    this.clientsService.create(body).subscribe({
+    this.clientsService.create(this.clientForm).subscribe({
       next: data => {
         console.log(data)
       },
@@ -188,7 +190,9 @@ export class ClientsComponent implements OnInit {
     this.functionsService.showLoading = true;
 
     this.clientsService.edit(this.clientForm).subscribe({
-      next: data => console.log(data),
+      next: data => {
+        this.functionsService.returnAlert('Cliente editado com sucesso!', 'success');
+      },
       error: error => console.log(error),
       complete: () => {
         this.functionsService.showLoading = false;

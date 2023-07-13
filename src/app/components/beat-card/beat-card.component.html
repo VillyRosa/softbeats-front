@@ -5,8 +5,9 @@
     </div>
     <div class="bottom">
         <div class="controllers">
-            <mat-icon>attach_money</mat-icon>
-            <mat-icon class="start-pause">play_arrow</mat-icon>
+            <mat-icon (click)="beat.currentTime = 0; beat.play();">replay</mat-icon>
+            <mat-icon *ngIf="this.beat.paused" class="start-pause" (click)="this.beat.play()">play_arrow</mat-icon>
+            <mat-icon *ngIf="!this.beat.paused" class="start-pause" (click)="this.beat.pause()">pause</mat-icon>
             <mat-icon>visibility</mat-icon>
         </div>
     </div>
