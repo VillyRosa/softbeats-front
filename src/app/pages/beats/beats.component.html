@@ -1,6 +1,6 @@
-<app-header-page title="Meus beats"></app-header-page>
+<app-header-page title="Meus beats" (handleClick)="toggleView($event)"></app-header-page>
 
-<div class="filter">
+<div *ngIf="viewRegisters" class="filter">
 
     <app-input-search [noMargin]="true" (searchChange)="onSearchChange($event, 'name')"></app-input-search>
 
@@ -16,6 +16,65 @@
 
 </div>
 
-<div class="beats-list">
+<div *ngIf="viewRegisters" class="beats-list">
     <app-beat-card *ngFor="let beat of beatsFilter" [name]="beat.name" [image]="beat.image" [audio]="beat.audio"></app-beat-card>
 </div>
+
+<form *ngIf="!viewRegisters" class="form-main">
+
+    <div class="title">
+        <h3>Informações do beat</h3>
+        <hr>
+    </div>
+
+    <div class="line">
+        <!-- Nome do beat -->
+        <div class="inputBox">
+            <label for="name">Nome</label>
+            <input type="text" [(ngModel)]="beatForm.name" name="name" id="name" placeholder="Nome do seu beat">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Categoria do beat -->
+        <div class="inputBox">
+            <label for="category">Categoria</label>
+            <select [(ngModel)]="beatForm.category_id" name="category" id="category">
+                <option [value]="null">Selecione a categoria</option>
+                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+            </select>
+        </div>
+        <!-- Gênero do beat -->
+        <div class="inputBox">
+            <label for="gender">Gênero</label>
+            <select [(ngModel)]="beatForm.gender_id" name="gender" id="gender">
+                <option [value]="null">Selecione o gênero</option>
+                <option *ngFor="let gender of genders" [value]="gender.id">{{gender.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Imagem do beat -->
+        <div class="inputBox">
+            <label for="image">Imagem do beat</label>
+            <input type="file" (change)="onImageSelected($event)" name="image" id="image">
+        </div>
+        <!-- Áudio do beat -->
+        <div class="inputBox">
+            <label for="audio">Áudio do beat</label>
+            <input type="file" (change)="onAudioSelected($event)" name="audio" id="audio">
+        </div>
+    </div>
+
+    <div class="line">
+        <!-- Descrição do beat -->
+        <div class="inputBox">
+            <label for="description">Descrição</label>
+            <input type="text" [(ngModel)]="beatForm.description" name="description" id="description" placeholder="Descrição do seu beat">
+        </div>
+    </div>
+
+</form>
+
+<app-form-buttons *ngIf="!viewRegisters" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>

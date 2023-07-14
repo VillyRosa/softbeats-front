@@ -15,10 +15,20 @@ export class BeatsComponent implements OnInit {
 
   authUser: any;
   
+  viewRegisters: boolean = true;
   filters: any = {
     selectCategory: undefined,
     selectGender: undefined
-  }
+  };
+
+  beatForm: any = {
+    name: '',
+    category_id: null,
+    gender_id: null,
+    description: '',
+    image: '',
+    audio: ''
+  };
 
   beats: any = [];
   beatsFilter: any = [];
@@ -73,14 +83,12 @@ export class BeatsComponent implements OnInit {
 
     this.beatsFilter = this.beats;
     
-    this.beatsFilter = this.beatsFilter.filter((beat: any) => this.conditionName(this.filters.name, beat) && this.conditionCategory(this.filters.category, beat) && this.conditionGender(this.filters.gender, beat));
+    this.beatsFilter = this.beatsFilter.filter((beat: any) => this.conditionName(this.filters.name, beat) && this.conditionCategory(this.filters.selectCategory, beat) && this.conditionGender(this.filters.selectGender, beat));
 
   }
 
   conditionName(value: any, beat: any) {
     
-    console.log(value);
-
     if (value === undefined) return true;
 
     return beat.name.toLowerCase().indexOf(this.filters.name.toLowerCase()) !== -1;
@@ -88,12 +96,8 @@ export class BeatsComponent implements OnInit {
   }
 
   conditionCategory(value: any, beat: any) {
-    
-    console.log(value);
 
-    if (value === undefined) return true;
-
-    console.log(beat.category_id === Number(value));
+    if (value === undefined || value === 'undefined') return true;
 
     return beat.category_id === Number(value);
 
@@ -101,11 +105,40 @@ export class BeatsComponent implements OnInit {
 
   conditionGender(value: any, beat: any) {
     
-    if (value === undefined) return true;
-
-    console.log(beat.gender_id === Number(value));
+    if (value === undefined || value === 'undefined') return true;
 
     return beat.gender_id === Number(value);
+
+  }
+
+  toggleView(ev: boolean): void {
+    this.viewRegisters = ev;
+    this.onCancel();
+  }
+
+  onImageSelected(event: any): void {
+    const file: File = event.target.files[0];
+    this.beatForm.image = file;
+  }
+  
+  onAudioSelected(event: any): void {
+    const file: File = event.target.files[0];
+    this.beatForm.audio = file;
+  }
+
+  onSave(): void {
+    console.log(this.beatForm);
+  }
+
+  onEdit(): void {
+
+  }
+
+  onDelete(): void {
+
+  }
+
+  onCancel(): void {
 
   }
 
