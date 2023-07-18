@@ -1,1 +1,57 @@
-<app-header-page title="Vendas"></app-header-page>
+<app-header-page title="Vendas" (handleClick)="toggleView($event)"></app-header-page>
+
+<app-table 
+ *ngIf="viewRegisters"
+ [tableHeaders]="['Cliente', 'Qtde. beats', 'Preço', 'Data']" 
+ [tableLines]="tableLines" 
+ [values]="sales"
+ (objSelected)="onSelectSale($event)"
+>
+</app-table>
+
+<form *ngIf="!viewRegisters" class="form-main">
+
+    <div class="title">
+        <h3>Venda de beats</h3>
+        <hr>
+    </div>
+
+    <div class="line">
+        <!-- Cliente -->
+        <div class="inputBox">
+            <label for="client">Cliente</label>
+            <select [(ngModel)]="saleForm.clientid" name="client" id="client">
+                <option [value]="null">Selecione um cliente</option>
+                <option *ngFor="let client of clients" [value]="client.id">{{client.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="subtitle">
+        <h4>Adicionar mais um beat</h4>
+        <hr>
+        <button (click)="addBeat()"><mat-icon>add</mat-icon></button>
+    </div>
+
+    <div *ngFor="let beatSel of saleForm.beats; let i = index" class="line">
+        <!-- Beat -->
+        <div class="inputBox">
+            <label for="beats">Beats</label>
+            <select [(ngModel)]="saleForm.beats[i].beatid" name="beats" id="beats">
+                <option [value]="null">Selecione o beat</option>
+                <option *ngFor="let beat of beats" [value]="beat.id">{{beat.name}}</option>
+            </select>
+        </div>
+        
+        <!-- Preço -->
+        <div class="inputBox">
+            <label for="price">Preço do beat</label>
+            <input [(ngModel)]="saleForm.beats[i].price" type="tel" name="price" id="price" placeholder="Insira o preço que você deseja vender o beat">
+        </div>
+        <!-- Btn para remover um beat -->
+        <button (click)="removeBeat(i)" class="remove"><mat-icon>remove</mat-icon></button>
+    </div>
+
+</form>
+
+<app-form-buttons *ngIf="!viewRegisters" [isCreate]="!saleForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>

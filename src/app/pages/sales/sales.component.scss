@@ -1,0 +1,9 @@
+.remove {
+    background-color: rgb(224, 28, 28);
+    color: #fff;
+    transition: all 0.5s ease;
+}
+
+.remove:hover {
+    box-shadow: 0 0 8px #ff0000;
+}
