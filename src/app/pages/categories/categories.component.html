@@ -1,4 +1,4 @@
-<app-header-page title="Categorias" (handleClick)="toggleView($event)"></app-header-page>
+<app-header-page title="Licenças" (handleClick)="toggleView($event)"></app-header-page>
 
 <app-input-search *ngIf="viewRegisters" (searchChange)="onSearchChange($event)"></app-input-search>
 
@@ -13,7 +13,7 @@
 
 <form *ngIf="!viewRegisters" class="form-main">
     <div class="title">
-        <h3>Informações da categoria</h3>
+        <h3>Informações da licença</h3>
         <hr>
     </div>
 
@@ -21,7 +21,7 @@
         <!-- Descrição da categoria -->
         <div class="inputBox">
             <label for="name">Nome</label>
-            <input type="text" [(ngModel)]="categoryForm.name" name="name" id="name" placeholder="Nome da categoria">
+            <input type="text" [(ngModel)]="categoryForm.name" name="name" id="name" placeholder="Nome da licença">
         </div>
         <!-- Descrição da categoria -->
         <div class="inputBox">
@@ -34,7 +34,7 @@
         <!-- Descrição da categoria -->
         <div class="inputBox">
             <label for="description">Descrição</label>
-            <input type="text" [(ngModel)]="categoryForm.description" name="description" id="description" placeholder="Descrição da categoria">
+            <input type="text" [(ngModel)]="categoryForm.description" name="description" id="description" placeholder="Descrição da licença">
         </div>
     </div>
 

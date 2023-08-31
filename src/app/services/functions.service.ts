@@ -20,7 +20,7 @@ export class FunctionsService {
     return value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
   }
 
-  returnAlert(message: string, type: 'success' | 'danger' | 'warning' = 'success', timer: number = 3000) {
+  returnAlert(message: string, type: 'success' | 'danger' | 'warning' = 'success', timer: number = 3000): void {
 
     if (this.alertObj.showAlert) return;
 

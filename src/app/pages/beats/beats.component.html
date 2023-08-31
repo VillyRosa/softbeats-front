@@ -58,12 +58,12 @@
         <!-- Imagem do beat -->
         <div class="inputBox">
             <label for="image">Imagem do beat</label>
-            <input type="file" (change)="onImageSelected($event)" name="image" id="image">
+            <input type="file" (change)="onImageSelected($event)" name="image" id="image" accept=".png, .jpg, .jpeg, .jfif">
         </div>
         <!-- Áudio do beat -->
         <div class="inputBox">
             <label for="audio">Áudio do beat</label>
-            <input type="file" (change)="onAudioSelected($event)" name="audio" id="audio">
+            <input type="file" (change)="onAudioSelected($event)" name="audio" id="audio" accept=".wav, .mp3">
         </div>
     </div>
 

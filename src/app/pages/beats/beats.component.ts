@@ -70,9 +70,7 @@ export class BeatsComponent implements OnInit {
         this.genders = gendersResp;
       },
       error: error => console.log(error),
-      complete: () => {
-        this.functionsService.showLoading = false;
-      }
+      complete: () => this.functionsService.showLoading = false
     });
 
   }
@@ -127,7 +125,24 @@ export class BeatsComponent implements OnInit {
   }
 
   onSave(): void {
-    console.log(this.beatForm);
+
+    this.functionsService.showLoading = true;
+
+    let imageName: string;
+    let audioName: string;
+
+    const imageRequest = this.beatsService.cadImage({ image: this.beatForm.image });
+    const audioRequest = this.beatsService.cadAudio({ audio: this.beatForm.audio });
+
+    forkJoin([imageRequest, audioRequest]).subscribe({
+      next: ([imageResp, audioResp]) => {
+        imageName = imageResp.imageName;
+        audioName = audioResp.audioName;
+      },
+      error: (err: any) => console.error(err),
+      complete: () => this.functionsService.showLoading = false
+    });
+
   }
 
   onEdit(): void {

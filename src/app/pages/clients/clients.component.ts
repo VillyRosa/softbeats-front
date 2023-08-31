@@ -130,7 +130,7 @@ export class ClientsComponent implements OnInit {
           this.clientForm.address.street = data.logradouro;
           this.clientForm.address.complement = data.complemento;
         } else {
-          alert('Cep inválido.')
+          alert('Cep inválido.');
           this.clientForm.address.cep = '';
         }
 
