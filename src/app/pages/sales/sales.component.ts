@@ -26,13 +26,11 @@ export class SalesComponent implements OnInit {
 
   saleForm: any = {
     clientid: null,
-    beats: [
-      {
-        beatid: null,
-        price: ''
-      }
-    ]
-  }
+    beat: {
+      beatid: null,
+      price: ''
+    }
+  };
 
   constructor(
     private functionsService: FunctionsService,
@@ -66,15 +64,13 @@ export class SalesComponent implements OnInit {
         this.categories = categoriesResp;
         this.clients = clientsResp;
 
+        console.log(this.sales)
         salesResp.forEach((sale: any) => {
-          let price: number = 0;
-          sale.itens.forEach((item: any) => price+= parseFloat(item.price));
-
           this.tableLines.push([
-            clientsResp.filter((client: any) => client.id === sale.client_id)[0].name,
-            sale.itens.length,
-            this.functionsService.toBrl(price),
-            this.functionsService.convertDate(sale.datetime)
+            this.clients.filter((aux: any) => aux.id === sale.client_id)[0].name,
+            this.beats.filter((aux: any) => aux.id === sale.beat_id)[0].name,
+            sale.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+            this.formateDate(sale.datetime)
           ]);
         });
       },
@@ -108,19 +104,43 @@ export class SalesComponent implements OnInit {
 
   }
 
-  addBeat(): void {
-    this.saleForm.beats.push({
-      beatid: null,
-      price: ''
-    });
+  selectBeat(): void {
+    const beat = this.beats.filter((aux: any) => aux.id === Number(this.saleForm.beat.beatid))[0];
+    const licenceid = beat.category_id;
+
+    this.saleForm.beat.price = this.categories.filter((aux: any) => aux.id === Number(licenceid))[0].price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
   }
 
-  removeBeat(index: number): void {
-    if (this.saleForm.beats.length === 1) return this.functionsService.returnAlert('É necessário ter ao menos um beat!', 'warning');
-    this.saleForm.beats.splice(index, 1);
+  formateDate(datetime: string): string {
+
+    return `${datetime.slice(8, 10)}/${datetime.slice(5, 7)}/${datetime.slice(0, 4)}`;
+
   }
 
   onSave() {
+
+    this.functionsService.showLoading = true;
+
+    const priceString = this.saleForm.beat.price;
+    const numericString = priceString.replace(/[^\d.,]/g, '').replace(',', '.');
+    const priceDouble = parseFloat(numericString);
+
+    this.salesService.create({userid: this.authUser.id, clientid: this.saleForm.clientid, beatid: this.saleForm.beat.beatid, price: priceDouble}).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.load();
+        this.viewRegisters = true;
+        this.saleForm = {
+          clientid: null,
+          beat: {
+            beatid: null,
+            price: ''
+          }
+        };
+      },
+      error: (err: any) => console.error(err),
+      complete: () => this.functionsService.showLoading = false
+    });
 
   }
 

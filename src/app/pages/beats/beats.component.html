@@ -17,7 +17,7 @@
 </div>
 
 <div *ngIf="viewRegisters" class="beats-list">
-    <app-beat-card *ngFor="let beat of beatsFilter" [name]="beat.name" [image]="beat.image" [audio]="beat.audio"></app-beat-card>
+    <app-beat-card *ngFor="let beat of beatsFilter" [name]="beat.name" [image]="beat.image" [audio]="beat.audio" [beatObj]="beat" (beatSelect)="selectBeatToEdit($event)"></app-beat-card>
 </div>
 
 <form *ngIf="!viewRegisters" class="form-main">

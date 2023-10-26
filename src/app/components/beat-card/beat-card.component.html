@@ -1,6 +1,6 @@
 <div class="card">
     <div class="top">
-        <img [src]="image" alt="album-imagem">
+        <img [src]="url+'beats/image/'+image" alt="album-imagem">
         <h3>{{name}}</h3>
     </div>
     <div class="bottom">
@@ -8,7 +8,7 @@
             <mat-icon (click)="beat.currentTime = 0; beat.play();">replay</mat-icon>
             <mat-icon *ngIf="this.beat.paused" class="start-pause" (click)="this.beat.play()">play_arrow</mat-icon>
             <mat-icon *ngIf="!this.beat.paused" class="start-pause" (click)="this.beat.pause()">pause</mat-icon>
-            <mat-icon>visibility</mat-icon>
+            <mat-icon (click)="beatSelect.emit(beatObj)">visibility</mat-icon>
         </div>
     </div>
 </div>

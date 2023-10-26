@@ -4,11 +4,21 @@ import { Observable } from 'rxjs';
 
 interface ImageUpload {
   image: File;
-}
+};
 
 interface AudioUpload {
   audio: File;
-}
+};
+
+interface BeatUpload {
+  userid: number;
+  categoryid: number;
+  genderid: number;
+  description: string;
+  name: string;
+  image: string;
+  audio: string;
+};
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +41,6 @@ export class BeatsService {
     
     const formData = new FormData();
     formData.append('image', bodyRequest.image);
-    console.log(formData);
 
     return this.http.post(this.url + 'image', formData);
 
@@ -43,6 +52,12 @@ export class BeatsService {
     formData.append('audio', bodyRequest.audio);
 
     return this.http.post(this.url + 'audio', formData);
+
+  }
+
+  cadBeat(bodyRequest: BeatUpload): Observable<any> {
+
+    return this.http.post(this.url, bodyRequest);
 
   }
 

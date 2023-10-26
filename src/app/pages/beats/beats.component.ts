@@ -49,7 +49,7 @@ export class BeatsComponent implements OnInit {
 
   }
 
-  load() {
+  load(): void {
 
     this.functionsService.showLoading = true;
 
@@ -124,6 +124,16 @@ export class BeatsComponent implements OnInit {
     this.beatForm.audio = file;
   }
 
+  selectBeatToEdit(ev: any): void {
+    
+    this.viewRegisters = false;
+    this.beatForm.name = ev.name;
+    this.beatForm.category_id = ev.category_id;
+    this.beatForm.gender_id = ev.gender_id;
+    this.beatForm.description = ev.description;
+  
+  }
+
   onSave(): void {
 
     this.functionsService.showLoading = true;
@@ -138,9 +148,29 @@ export class BeatsComponent implements OnInit {
       next: ([imageResp, audioResp]) => {
         imageName = imageResp.imageName;
         audioName = audioResp.audioName;
+
+        const bodyRequest: any = {
+          userid: this.authUser.id,
+          categoryid: this.beatForm.category_id,
+          genderid: this.beatForm.gender_id,
+          description: this.beatForm.description,
+          name: this.beatForm.name,
+          image: imageName,
+          audio: audioName
+        };
+
+        this.beatsService.cadBeat(bodyRequest).subscribe({
+          next: (data: any) => {
+            console.log(data);
+            this.load();
+            this.viewRegisters = true;
+          },
+          error: (err: any) => console.error(err),
+          complete: () => this.functionsService.showLoading = false
+        });
+
       },
-      error: (err: any) => console.error(err),
-      complete: () => this.functionsService.showLoading = false
+      error: (err: any) => console.error(err)
     });
 
   }
@@ -150,6 +180,8 @@ export class BeatsComponent implements OnInit {
   }
 
   onDelete(): void {
+
+    
 
   }
 

@@ -2,7 +2,7 @@
 
 <app-table 
  *ngIf="viewRegisters"
- [tableHeaders]="['Cliente', 'Qtde. beats', 'Preço', 'Data']" 
+ [tableHeaders]="['Cliente', 'Beat', 'Preço', 'Data']" 
  [tableLines]="tableLines" 
  [values]="sales"
  (objSelected)="onSelectSale($event)"
@@ -27,17 +27,11 @@
         </div>
     </div>
 
-    <div class="subtitle">
-        <h4>Adicionar mais um beat</h4>
-        <hr>
-        <button (click)="addBeat()"><mat-icon>add</mat-icon></button>
-    </div>
-
-    <div *ngFor="let beatSel of saleForm.beats; let i = index" class="line">
+    <div class="line">
         <!-- Beat -->
         <div class="inputBox">
-            <label for="beats">Beats</label>
-            <select [(ngModel)]="saleForm.beats[i].beatid" name="beats" id="beats">
+            <label for="beats">Beat</label>
+            <select [(ngModel)]="saleForm.beat.beatid" (ngModelChange)="selectBeat()" name="beats" id="beats">
                 <option [value]="null">Selecione o beat</option>
                 <option *ngFor="let beat of beats" [value]="beat.id">{{beat.name}}</option>
             </select>
@@ -46,10 +40,8 @@
         <!-- Preço -->
         <div class="inputBox">
             <label for="price">Preço do beat</label>
-            <input [(ngModel)]="saleForm.beats[i].price" type="tel" name="price" id="price" placeholder="Insira o preço que você deseja vender o beat">
+            <input [(ngModel)]="saleForm.beat.price" type="tel" name="price" id="price" placeholder="Insira o preço que você deseja vender o beat">
         </div>
-        <!-- Btn para remover um beat -->
-        <button (click)="removeBeat(i)" class="remove"><mat-icon>remove</mat-icon></button>
     </div>
 
 </form>

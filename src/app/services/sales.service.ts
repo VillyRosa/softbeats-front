@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 interface ISaleCreate {
   userid: number;
   clientid: number;
-  itens: any;
+  beatid: number;
+  price: number;
 };
 
 interface ISaleEdit {

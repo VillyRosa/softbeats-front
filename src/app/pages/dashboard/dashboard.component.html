@@ -6,3 +6,10 @@
     <app-dashboard-card icon="headphones" iconColor="#222" title="Total de beats" [value]="itens.totalBeats"></app-dashboard-card>
     <app-dashboard-card icon="groups" iconColor="#222" title="Total de clientes" [value]="itens.totalClients"></app-dashboard-card>
 </section>
+
+<app-table 
+ [tableHeaders]="['Cliente', 'Beat', 'Preço', 'Data']"
+ [tableLines]="tableLines" 
+ [values]="sales"
+>
+</app-table>
