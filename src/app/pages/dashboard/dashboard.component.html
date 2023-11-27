@@ -7,7 +7,8 @@
     <app-dashboard-card icon="groups" iconColor="#222" title="Total de clientes" [value]="itens.totalClients"></app-dashboard-card>
 </section>
 
-<app-table 
+<app-table
+ *ngIf="tableLines.length > 0"
  [tableHeaders]="['Cliente', 'Beat', 'Preço', 'Data']"
  [tableLines]="tableLines" 
  [values]="sales"

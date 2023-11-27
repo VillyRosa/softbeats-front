@@ -51,6 +51,8 @@ export class SalesComponent implements OnInit {
 
     this.authUser = this.usersService.getAuth();
     this.clients = [];
+    this.tableLines = [];
+    this.sales = [];
 
     const salesRequest = this.salesService.getAll(this.authUser.id);
     const beatsService = this.beatsService.getAll(this.authUser.id);
@@ -64,12 +66,11 @@ export class SalesComponent implements OnInit {
         this.categories = categoriesResp;
         this.clients = clientsResp;
 
-        console.log(this.sales)
         salesResp.forEach((sale: any) => {
           this.tableLines.push([
             this.clients.filter((aux: any) => aux.id === sale.client_id)[0].name,
             this.beats.filter((aux: any) => aux.id === sale.beat_id)[0].name,
-            sale.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+            sale.price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }),
             this.formateDate(sale.datetime)
           ]);
         });
@@ -82,33 +83,35 @@ export class SalesComponent implements OnInit {
 
   toggleView(ev: boolean): void {
     this.viewRegisters = ev;
+
+    this.saleForm = {
+      clientid: null,
+      beat: {
+        beatid: null,
+        price: ''
+      }
+    };
+
     this.onCancel();
   }
 
   onSelectSale(ev: any): void {
 
-    console.log(ev)
-
     this.saleForm.id = ev.id;
     this.saleForm.clientid = ev.client_id;
+    this.saleForm.beat.beatid = ev.beat_id;
+    this.saleForm.beat.price = ev.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });;
 
-    this.saleForm.beats = [];
-    ev.itens.forEach((sale: any) => {
-      this.saleForm.beats.push({
-        beatid: sale.beat_id,
-        price: sale.price
-      });
-    });
-    
     this.viewRegisters = false;
 
   }
 
   selectBeat(): void {
+    if (this.saleForm.beat.beatid === 'null') return;
     const beat = this.beats.filter((aux: any) => aux.id === Number(this.saleForm.beat.beatid))[0];
     const licenceid = beat.category_id;
 
-    this.saleForm.beat.price = this.categories.filter((aux: any) => aux.id === Number(licenceid))[0].price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    this.saleForm.beat.price = this.categories.filter((aux: any) => aux.id === Number(licenceid))[0].price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
   }
 
   formateDate(datetime: string): string {
@@ -119,15 +122,48 @@ export class SalesComponent implements OnInit {
 
   onSave() {
 
+    if (this.saleForm.clientid === null) return this.functionsService.returnAlert('Insira o cliente', 'danger');
+    if (this.saleForm.beat.beatid === null) return this.functionsService.returnAlert('Insira o beat', 'danger');
+    if (this.saleForm.beat.price === null || this.saleForm.beat.price === '') return this.functionsService.returnAlert('Insira o valor', 'danger');
+
     this.functionsService.showLoading = true;
 
     const priceString = this.saleForm.beat.price;
     const numericString = priceString.replace(/[^\d.,]/g, '').replace(',', '.');
     const priceDouble = parseFloat(numericString);
 
-    this.salesService.create({userid: this.authUser.id, clientid: this.saleForm.clientid, beatid: this.saleForm.beat.beatid, price: priceDouble}).subscribe({
+    this.salesService.create({ userid: this.authUser.id, clientid: this.saleForm.clientid, beatid: this.saleForm.beat.beatid, price: priceDouble }).subscribe({
       next: (data: any) => {
         console.log(data);
+        this.load();
+        this.viewRegisters = true;
+        this.saleForm = {
+          clientid: null,
+          beat: {
+            beatid: null,
+            price: ''
+          }
+        };
+        this.functionsService.returnAlert(data.message, 'success');
+      },
+      error: (err: any) => console.error(err),
+      complete: () => this.functionsService.showLoading = false
+    });
+
+  }
+
+  onEdit() {
+
+    if (this.saleForm.clientid === null) return this.functionsService.returnAlert('Insira o cliente', 'danger');
+    if (this.saleForm.beat.beatid === null || this.saleForm.beat.beatid === 'null') return this.functionsService.returnAlert('Insira o beat', 'danger');
+    if (this.saleForm.beat.price === null || this.saleForm.beat.price === '') return this.functionsService.returnAlert('Insira o valor', 'danger');
+
+    this.functionsService.showLoading = true;
+
+    this.salesService.edit({ id: this.saleForm.id, clientid: this.saleForm.clientid, beatid: this.saleForm.beat.beatid, price: this.convertToDouble(this.saleForm.beat.price) }).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.functionsService.returnAlert(data.message, 'success');
         this.load();
         this.viewRegisters = true;
         this.saleForm = {
@@ -144,16 +180,57 @@ export class SalesComponent implements OnInit {
 
   }
 
-  onEdit() {
-
-  }
-
   onDelete() {
+
+    this.functionsService.showLoading = true;
+
+    this.salesService.delete(this.saleForm.id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.load();
+        this.viewRegisters = true;
+        this.saleForm = {
+          clientid: null,
+          beat: {
+            beatid: null,
+            price: ''
+          }
+        };
+        this.functionsService.returnAlert(data.message, 'success');
+      },
+      error: (err: any) => console.error(err),
+      complete: () => this.functionsService.showLoading = false
+    });
 
   }
 
   onCancel() {
+    this.saleForm = {
+      clientid: null,
+      beat: {
+        beatid: null,
+        price: ''
+      }
+    };
+  }
 
+  convertToDouble(valorString: string): number {
+    const valorLimpo = valorString.replace(/\s/g, '');
+
+    if (valorLimpo.startsWith('R$')) {
+      const valorNumericoString = valorLimpo.substring(2);
+      const valorNumericoFormatado = valorNumericoString.replace(/\./g, '').replace(',', '.');
+      const valorNumerico = parseFloat(valorNumericoFormatado);
+      if (!isNaN(valorNumerico)) {
+        return valorNumerico;
+      } else {
+        console.error('Formato inválido para conversão: ' + valorString);
+        return 0;
+      }
+    } else {
+      console.error('Formato inválido para conversão: ' + valorString);
+      return 0;
+    }
   }
 
 }

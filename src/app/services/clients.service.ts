@@ -7,8 +7,8 @@ interface ICreate {
   name: string;
   email: string;
   telephone: string;
-  instagram: string;
-  address: {
+  instagram?: string;
+  address?: {
     cep: string;
     state: string;
     city: string;
@@ -25,7 +25,7 @@ interface IEdit {
   email?: string;
   telephone?: string;
   instagram?: string;
-  address: {
+  address?: {
     cep?: string;
     state?: string;
     city?: string;

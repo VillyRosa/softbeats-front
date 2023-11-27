@@ -17,7 +17,11 @@ export class FunctionsService {
   constructor() {}
 
   toBrl(value: number): string {
-    return value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    if (value === undefined || value === null) {
+      return 'R$ 0,00';
+    }
+  
+    return value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
   }
 
   returnAlert(message: string, type: 'success' | 'danger' | 'warning' = 'success', timer: number = 3000): void {

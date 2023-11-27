@@ -14,11 +14,23 @@ interface BeatUpload {
   userid: number;
   categoryid: number;
   genderid: number;
-  description: string;
+  description?: string;
   name: string;
   image: string;
   audio: string;
+  bpm?: number;
 };
+
+interface BeatUpdate {
+  beatid: number;
+  categoryid?: number;
+  genderid?: number;
+  description?: string;
+  name?: string;
+  image?: string;
+  audio?: string;
+  bpm?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +70,18 @@ export class BeatsService {
   cadBeat(bodyRequest: BeatUpload): Observable<any> {
 
     return this.http.post(this.url, bodyRequest);
+
+  }
+
+  editBeat(bodyRequest: BeatUpdate): Observable<any> {
+
+    return this.http.patch(this.url, bodyRequest)
+
+  }
+
+  delBeat(id: number): Observable<any> {
+
+    return this.http.delete(this.url + id);
 
   }
 

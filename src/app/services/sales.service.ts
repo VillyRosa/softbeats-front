@@ -10,9 +10,10 @@ interface ISaleCreate {
 };
 
 interface ISaleEdit {
-  userid?: number;
+  id: number;
   clientid?: number;
-  itens?: any;
+  beatid?: number;
+  price?: number;
 };
 
 @Injectable({

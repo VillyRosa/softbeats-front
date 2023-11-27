@@ -127,7 +127,10 @@ export class BeatsComponent implements OnInit {
   selectBeatToEdit(ev: any): void {
     
     this.viewRegisters = false;
+    this.beatForm.id = ev.id;
     this.beatForm.name = ev.name;
+    this.beatForm.bpm = ev.bpm;
+    if (this.beatForm.bpm === 0) this.beatForm.bpm = undefined;
     this.beatForm.category_id = ev.category_id;
     this.beatForm.gender_id = ev.gender_id;
     this.beatForm.description = ev.description;
@@ -135,6 +138,11 @@ export class BeatsComponent implements OnInit {
   }
 
   onSave(): void {
+
+    if (this.beatForm.name === undefined || this.beatForm.name === '') return this.functionsService.returnAlert('Insira o nome do beat', 'danger');
+    if (this.beatForm.category_id === undefined || this.beatForm.category_id === null || this.beatForm.category_id === 'null') return this.functionsService.returnAlert('Insira a licença do beat', 'danger');
+    if (this.beatForm.gender_id === undefined || this.beatForm.gender_id === null || this.beatForm.gender_id === 'null') return this.functionsService.returnAlert('Insira o gênero do beat', 'danger');
+    if (this.beatForm.audio === undefined || this.beatForm.audio === '') return this.functionsService.returnAlert('Insira o áudio do beat', 'danger');
 
     this.functionsService.showLoading = true;
 
@@ -163,8 +171,8 @@ export class BeatsComponent implements OnInit {
         this.beatsService.cadBeat(bodyRequest).subscribe({
           next: (data: any) => {
             console.log(data);
-            this.load();
-            this.viewRegisters = true;
+            this.functionsService.returnAlert('Beat cadastrado com sucesso!', 'success');
+            this.toggleView(true);
           },
           error: (err: any) => console.error(err),
           complete: () => this.functionsService.showLoading = false
@@ -176,18 +184,101 @@ export class BeatsComponent implements OnInit {
 
   }
 
-  onEdit(): void {
+  async onEdit() {
+
+    if (this.beatForm.name === undefined || this.beatForm.name === '') return this.functionsService.returnAlert('Insira o nome do beat', 'danger');
+    if (this.beatForm.category_id === undefined || this.beatForm.category_id === null || this.beatForm.category_id === 'null') return this.functionsService.returnAlert('Insira a licença do beat', 'danger');
+    if (this.beatForm.gender_id === undefined || this.beatForm.gender_id === null || this.beatForm.gender_id === 'null') return this.functionsService.returnAlert('Insira o gênero do beat', 'danger');
+
+    this.functionsService.showLoading = true;
+
+    const bodyRequest: any = {
+      beatid: this.beatForm.id,
+      categoryid: this.beatForm.category_id,
+      genderid: this.beatForm.gender_id,
+      description: this.beatForm.description,
+      bpm: this.beatForm.bpm,
+      name: this.beatForm.name,
+      image: '',
+      audio: ''
+    };
+
+    if (!bodyRequest.bpm) bodyRequest.bpm = 0;
+
+    if (this.beatForm.image !== "") {
+      bodyRequest.image = await this.cadImage();
+    }
+
+    if (this.beatForm.audio !== "") {
+      bodyRequest.audio = await this.cadAudio();
+    }
+
+    this.beatsService.editBeat(bodyRequest).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.toggleView(true);
+        this.functionsService.returnAlert('Beat atualizado com sucesso!', 'success');
+      },
+      error: (err: any) => console.error(err),
+      complete: () => this.functionsService.showLoading = false
+    });
 
   }
 
   onDelete(): void {
 
-    
+    this.functionsService.showLoading = true;
+
+    this.beatsService.delBeat(this.beatForm.id).subscribe({
+      next: (data: any) => {
+        console.log(data);
+        this.functionsService.returnAlert('Beat excluido com sucesso!', 'success');
+        this.toggleView(true);
+      },
+      error: (err: any) => console.error(err),
+      complete: () => this.functionsService.showLoading = false
+    });
 
   }
 
   onCancel(): void {
+    this.load();
+    this.beatForm = {
+      name: '',
+      category_id: null,
+      gender_id: null,
+      description: '',
+      image: '',
+      audio: ''
+    };
+  }
 
+  async cadImage(): Promise<string> {
+    let path = '';
+  
+    try {
+      const data: any = await this.beatsService.cadImage({ image: this.beatForm.image }).toPromise();
+      console.log(data);
+      path = data.imageName;
+    } catch (err) {
+      console.error(err);
+    }
+  
+    return path;
+  }
+
+  async cadAudio(): Promise<string> {
+    let path = '';
+  
+    try {
+      const data: any = await this.beatsService.cadAudio({ audio: this.beatForm.audio }).toPromise();
+      console.log(data);
+      path = data.audioName;
+    } catch (err) {
+      console.error(err);
+    }
+  
+    return path;
   }
 
 }

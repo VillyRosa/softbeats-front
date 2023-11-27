@@ -96,7 +96,7 @@ export class CategoriesComponent implements OnInit {
     this.categoriesService.create(body).subscribe({
       next: data => {
         console.log(data);
-        this.functionsService.returnAlert('Categoria cadastrada com sucesso!', 'success');
+        this.functionsService.returnAlert('Licença cadastrada com sucesso!', 'success');
       },
       error: err => console.log(err),
       complete: () =>  {
@@ -118,7 +118,7 @@ export class CategoriesComponent implements OnInit {
     this.categoriesService.edit(this.categoryForm).subscribe({
       next: data => {
         console.log(data);
-        this.functionsService.returnAlert('Categoria editada com sucesso!', 'success')
+        this.functionsService.returnAlert('Licença editada com sucesso!', 'success')
       },
       error: err => console.log(err),
       complete: () => {
@@ -136,7 +136,7 @@ export class CategoriesComponent implements OnInit {
     this.categoriesService.delete(this.categoryForm.id).subscribe({
       next: data => {
         console.log(data);
-        this.functionsService.returnAlert('Categoria excluida com sucesso!', 'success')
+        this.functionsService.returnAlert('Licença excluida com sucesso!', 'success')
       },
       error: err => console.log(err),
       complete: () => {

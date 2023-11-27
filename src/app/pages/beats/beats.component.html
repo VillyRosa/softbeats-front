@@ -82,4 +82,4 @@
 
 </form>
 
-<app-form-buttons *ngIf="!viewRegisters" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>
+<app-form-buttons *ngIf="!viewRegisters" [isCreate]="!beatForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>
