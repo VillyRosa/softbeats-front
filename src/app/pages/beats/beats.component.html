@@ -5,7 +5,7 @@
     <app-input-search [noMargin]="true" (searchChange)="onSearchChange($event, 'name')"></app-input-search>
 
     <select name="category" id="category" [(ngModel)]="filters.selectCategory" (ngModelChange)="onSearchChange($event, 'category')">
-        <option [value]="undefined">Categoria</option>
+        <option [value]="undefined">Licença</option>
         <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
     </select>
 
@@ -33,14 +33,19 @@
             <label for="name">Nome</label>
             <input type="text" [(ngModel)]="beatForm.name" name="name" id="name" placeholder="Nome do seu beat">
         </div>
+        <!-- Bpm do beat -->
+        <div class="inputBox">
+            <label for="bpm">BPM</label>
+            <input type="number" [(ngModel)]="beatForm.bpm" name="bpm" id="bpm" placeholder="BPM do beat">
+        </div>
     </div>
 
     <div class="line">
-        <!-- Categoria do beat -->
+        <!-- Licença do beat -->
         <div class="inputBox">
-            <label for="category">Categoria</label>
+            <label for="category">Licença</label>
             <select [(ngModel)]="beatForm.category_id" name="category" id="category">
-                <option [value]="null">Selecione a categoria</option>
+                <option [value]="null">Selecione a licença</option>
                 <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
             </select>
         </div>

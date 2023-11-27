@@ -43,69 +43,25 @@
             <input type="text" [(ngModel)]="clientForm.instagram" name="instagram" id="instagram" placeholder="Ex. @josesilva">
         </div>
     </div>
-    
-</form>
 
-<form *ngIf="!viewRegisters" class="form-main">
+    <app-form-buttons *ngIf="!viewRegisters" [isCreate]="!clientForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>
 
-    <div class="title">
-        <h3>Endereço</h3>
+    <div class="title" *ngIf="tableLinesSales.length > 0">
+        <h3>Compras do cliente</h3>
         <hr>
     </div>
 
-    <div class="line">
-        <!-- CEP do cliente -->
-        <div class="inputBox">
-            <label for="cep">CEP</label>
-            <input type="tel" [(ngModel)]="clientForm.address.cep" (ngModelChange)="searchCep()" name="cep" id="cep" placeholder="00000-000" mask="00000-000">
-        </div>
-    </div>
-
-    <div class="line">
-        <!-- Estado do cliente -->
-        <div class="inputBox">
-            <label for="state">Estado</label>
-            <select [(ngModel)]="clientForm.address.state" (ngModelChange)="getCities()" name="state" id="state">
-                <option [value]="null" selected>Selecione um estado</option>
-                <option [value]="state.sigla" *ngFor="let state of states">{{state.nome}}</option>
-            </select>
-        </div>
-        <!-- Cidade do cliente -->
-        <div class="inputBox">
-            <label for="city">Cidade</label>
-            <select [(ngModel)]="clientForm.address.city" name="city" id="city">
-                <option [value]="null" selected>Selecione uma cidade</option>
-                <option [value]="city.nome" *ngFor="let city of cities">{{city.nome}}</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="line">
-        <!-- Bairro do cliente -->
-        <div class="inputBox">
-            <label for="neighborhood">Bairro</label>
-            <input type="text" [(ngModel)]="clientForm.address.neighborhood" name="neighborhood" id="neighborhood" placeholder="Ex. Jardim Primavera">
-        </div>
-        <!-- Rua do cliente -->
-        <div class="inputBox">
-            <label for="street">Rua</label>
-            <input type="text" [(ngModel)]="clientForm.address.street" name="street" id="street" placeholder="Ex. Rua João Antônio Fagundes">
-        </div>
-    </div>
-
-    <div class="line">
-        <!-- Número do endereço do cliente -->
-        <div class="inputBox">
-            <label for="number">Número</label>
-            <input type="number" [(ngModel)]="clientForm.address.number" name="number" id="number" placeholder="Ex. 458">
-        </div>
-        <!-- Complemento do cliente -->
-        <div class="inputBox">
-            <label for="complement">Complemento</label>
-            <input type="text" [(ngModel)]="clientForm.address.complement" name="complement" id="complement" placeholder="Ex. apto 842">
-        </div>
+    <div class="header" *ngIf="tableLinesSales.length > 0">
+        <p>Quantidade total: {{tableLinesSales.length}} compras</p>
+        <p>Valor total: {{valueTotal()}}</p>
     </div>
     
 </form>
 
-<app-form-buttons *ngIf="!viewRegisters" [isCreate]="!clientForm.id" (saveAction)="onSave()" (editAction)="onEdit()" (deleteAction)="onDelete()"></app-form-buttons>
+<app-table 
+ *ngIf="!viewRegisters && tableLinesSales.length > 0"
+ [tableHeaders]="['Cliente', 'Beat', 'Preço', 'Data']" 
+ [tableLines]="tableLinesSales" 
+ [values]="clientSales"
+>
+</app-table>

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom, forkJoin } from 'rxjs';
+import { BeatsService } from 'src/app/services/beats.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { FunctionsService } from 'src/app/services/functions.service';
 import { IbgeService } from 'src/app/services/ibge.service';
+import { SalesService } from 'src/app/services/sales.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ViacepService } from 'src/app/services/viacep.service';
 
@@ -21,6 +23,8 @@ export class ClientsComponent implements OnInit {
   tableLines: any = [];
 
   clients: any = [];
+  sales: any = [];
+  beats: any = [];
 
   clientForm: any = {
     name: '',
@@ -37,16 +41,20 @@ export class ClientsComponent implements OnInit {
       complement: ''
     }
   };
+  clientSales: any = [];
+  tableLinesSales: any = [];
 
   states: any = [];
   cities: any = [];
 
   constructor(
-    private readonly usersService: UsersService,
-    private readonly clientsService: ClientsService,
-    private readonly viacepService: ViacepService,
-    private readonly ibgeService: IbgeService,
-    private readonly functionsService: FunctionsService
+    private usersService: UsersService,
+    private clientsService: ClientsService,
+    private viacepService: ViacepService,
+    private ibgeService: IbgeService,
+    private functionsService: FunctionsService,
+    private salesService: SalesService,
+    private beatsService: BeatsService
   ) {
 
   }
@@ -67,11 +75,15 @@ export class ClientsComponent implements OnInit {
 
     const clientsRequest = this.clientsService.getAll(this.authUser.id);
     const statesRequest = this.ibgeService.getStates();
+    const salesRequest = this.salesService.getAll(this.authUser.id);
+    const beatsRequest = this.beatsService.getAll(this.authUser.id);
 
-    forkJoin([clientsRequest, statesRequest]).subscribe({
-      next: ([clientsResp, statesResp]) => {
+    forkJoin([clientsRequest, statesRequest, salesRequest, beatsRequest]).subscribe({
+      next: ([clientsResp, statesResp, salesResp, beatsResp]) => {
         this.clients = clientsResp;
         this.states = statesResp;
+        this.sales = salesResp;
+        this.beats = beatsResp;
   
         clientsResp.forEach((client: any) => this.tableLines.push([client.name, client.email, client.telephone, client.instagram]));
       },
@@ -147,17 +159,37 @@ export class ClientsComponent implements OnInit {
     this.clientForm.email = ev.email;
     this.clientForm.telephone = ev.telephone;
     this.clientForm.instagram = ev.instagram;
-    this.clientForm.address.cep = ev.address.cep;
-    this.clientForm.address.state = ev.address.state;
-    await this.getCities()
-    this.clientForm.address.city = ev.address.city;
-    this.clientForm.address.neighborhood = ev.address.neighborhood;
-    this.clientForm.address.street = ev.address.street;
-    this.clientForm.address.number = ev.address.number;
-    this.clientForm.address.complement = ev.address.complement;
     
+    this.clientSales = [];
+    this.tableLinesSales = [];
+
+    this.clientSales = this.sales.filter((aux: any) => aux.client_id === ev.id);
+    this.clientSales.forEach((sale: any) => {
+      this.tableLinesSales.push([
+        this.clients.filter((aux: any) => aux.id === sale.client_id)[0].name,
+        this.beats.filter((aux: any) => aux.id === sale.beat_id)[0].name,
+        sale.price.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+        this.formateDate(sale.datetime)
+      ]);
+    });
+
     this.viewRegisters = false;
 
+  }
+
+  formateDate(datetime: string): string {
+
+    return `${datetime.slice(8, 10)}/${datetime.slice(5, 7)}/${datetime.slice(0, 4)}`;
+
+  }
+
+  valueTotal(): string {
+
+    let total: number = 0;
+
+    this.clientSales.forEach((aux: any) => total+= parseFloat(aux.price));
+
+    return total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
   }
 
   onSave(): void {
