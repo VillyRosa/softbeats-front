@@ -156,7 +156,8 @@ export class BeatsComponent implements OnInit {
           description: this.beatForm.description,
           name: this.beatForm.name,
           image: imageName,
-          audio: audioName
+          audio: audioName,
+          bpm: this.beatForm.bpm
         };
 
         this.beatsService.cadBeat(bodyRequest).subscribe({
